@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Approach · RL Wall Street</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="navbar"><div class="nav-inner"><a href="index.html"><img src="assets/logo.svg" alt="RL Wall Street logo"></a><div class="links"><a href="index.html">Home</a><a href="milestones.html">Milestones</a><a href="approach.html" aria-current="page">Approach</a><a href="ethics.html">Risks &amp; Ethics</a><a href="team.html">Team</a></div></div></nav>
+<main class="container">
+<h1>Approach</h1>
+
+<h2>Frameworks and Algorithms</h2>
+<p>The Isaac Sim reinforcement workflow we're going to use is RSL-RL. This is because RSL-RL is purpose built for robotics reinforcement learning rather than general reinforcement learning.</p>
+<p>We would use a single agent rather than multiple agents because our robot flipping onto a wall is a single agent problem. This is because we only have one robot.</p>
+<p>We want to use the teacher-student method because the teacher provides a lot of extra information during simulation that we wouldn't have otherwise.</p>
+
+<h2>Hand Calcs</h2>
+<p>We've already started to model the force a little bit. This is just for the robot on the wall, but we would have to perform calculations for how it would get from the ground and then onto the wall as well.</p>
+<img class="full" src="assets/hand-calcs.jpg" alt="Handwritten free-body diagram and force balance for the robot on a wall">
+
+<h2>Similar Project</h2>
+<p><a href="https://www.youtube.com/watch?v=KRYT2kYbgo4">VertiGo (ETH Zurich)</a>. We are planning to use a similar system mechanically (2 tilting thrusters and a similar floor to wall transition maneuver), but we want to use an RL policy instead of a hand designed and calculated controller.</p>
+
+<h2>Literature We Are Working On Processing</h2>
+<p>We are reading <em>Learning Energy-Efficient Air–Ground Actuation for Hybrid Robots on Stair-Like Terrain</em>, <em>Learning Air-Ground Motion Control with Temporal Mode Switching and Cross-Terrain Tracking</em>, the paper at <a href="https://arxiv.org/pdf/2103.03011">arXiv:2103.03011</a>, and <a href="https://arxiv.org/abs/2212.03828"><em>Pegasus Simulator: An Isaac Sim Framework for Multiple Aerial Vehicles Simulation</em></a>.</p>
+</main>
+</body>
+</html>

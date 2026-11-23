@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RL Wall Street</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="navbar"><div class="nav-inner"><a href="index.html"><img src="assets/logo.svg" alt="RL Wall Street logo"></a><div class="links"><a href="index.html" aria-current="page">Home</a><a href="milestones.html">Milestones</a><a href="approach.html">Approach</a><a href="ethics.html">Risks &amp; Ethics</a><a href="team.html">Team</a></div></div></nav>
+<main class="container">
+<h1>RL Wall Street</h1>
+<p class="muted">Trevor McDonald, Pia Swarup, Aditi Lagisetty, Premkumar Sethumadhavan · CompRobo</p>
+<img class="full" src="assets/robot.png" alt="Our robot: a chassis with two ducted, gimbaled propellers on large wheels">
+
+<h2>Main Idea</h2>
+<p>We are building a thrust vectoring chassis for a robot that will be able to climb walls. It is based on the <a href="https://www.youtube.com/watch?v=KRYT2kYbgo4">VertiGo project from ETH Zurich</a>.</p>
+<p>The computational aspect of the robot we want to capitalize on for this project is using reinforcement learning to train a neural network to serve as the controller of our robot through simulation. Essentially, instead of hand calculating the dynamics of the system and then creating a controller around that, we want to use simulation, particularly Isaac Sim and Isaac Lab, to create a representation of the real world and our robot to allow our neural network to learn the dynamics of the world as well as how to respond to the instructions we provide it.</p>
+<p>Specifically, the neural network may take in data from the IR sensors, the current absolute positions of the gimbals, the current thrust values, data from the IMU, and the target vector input.</p>
+<p>Then it will output the gimbal position and thrust value it should perform to get to the inputted vector state. When trying to do a floor to wall transition versus following input controls for simple navigation, we can modify our reward function to consider the IR inputs or ignore them.</p>
+
+<h2>Motivation</h2>
+<p>We are building a wall climbing robot for our PIE project and would like to simplify the controls of the robot using a learning model. This directly impacts our PIE project since it will simplify teleoperation and automating robot movement. We are all also interested in understanding and using reinforcement learning to simplify solving hard controls problems that may have potential gaps in the understanding physics can provide, leading us to want to investigate using deep learning for potential meaningful generalization.</p>
+<p>There are several applications of our project, such as for entertainment purposes (what Disney is planning to use it for) or to access walls and parts of buildings that are not easily accessible to people. It could also be used for inspection of dangerous areas, such as chemical plants.</p>
+
+<h2>MVP and Stretch Goals</h2>
+<p>Our MVP is a neural network that, given a vector, will output the gimbal positions and propeller RPM to accelerate the robot to match that vector. Additionally, when given a vector that points towards a wall (which the network will identify through cases where the IR sensor readings are the same and a state value for flipping is inputted into the network) the model should output the proper gimbal angles and thrust values to flip the robot onto the wall.</p>
+<p>Our stretch goal is to test the models in real life on the robot by performing sim2real.</p>
+
+<h2>Links</h2>
+<p>Our code is in our <a href="https://github.com/piaswarup/RL-wall-street">GitHub repository</a>, and our project is inspired by <a href="https://www.youtube.com/watch?v=KRYT2kYbgo4">VertiGo from ETH Zurich</a>.</p>
+</main>
+</body>
+</html>

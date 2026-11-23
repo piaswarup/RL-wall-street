@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Milestones · RL Wall Street</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="navbar"><div class="nav-inner"><a href="index.html"><img src="assets/logo.svg" alt="RL Wall Street logo"></a><div class="links"><a href="index.html">Home</a><a href="milestones.html" aria-current="page">Milestones</a><a href="approach.html">Approach</a><a href="ethics.html">Risks &amp; Ethics</a><a href="team.html">Team</a></div></div></nav>
+<main class="container">
+<h1>Milestones</h1>
+
+<h2>Milestone 1 (Nov 22): Version 1 of Simulator Done</h2>
+<p>By Milestone 1, Isaac Sim and Isaac Lab will be installed and working on the Unity cluster for all teammates. The URDF file of our model will be exported and converted into USD, prop thrust will be applied as forces in the simulation, and a floor and a wall will be added to the simulation. The inputs (IR, IMU, gimbal, thrust) and outputs (gimbal, thrust) of our neural network will be defined in code. Finally, the RSL-RL framework will be set up to feed gradients into our policy from sim iterations. We can validate this using the random action agent feature to see if our network outputs anything at all through randomly scattered weights.</p>
+
+<h2>Milestone 2 (Dec 7): Model for Gimbal Trained</h2>
+<p>By Milestone 2, the reward function for following a target vector on the floor will be written and tuned, and we will train a policy with PPO that can follow target vectors on the floor. We will also write the reward function for the floor to wall flip and do our first training runs for it in simulation. We will have training curves, test results, and videos of the policy in simulation to show our progress.</p>
+</main>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Risks &amp; Ethics · RL Wall Street</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="navbar"><div class="nav-inner"><a href="index.html"><img src="assets/logo.svg" alt="RL Wall Street logo"></a><div class="links"><a href="index.html">Home</a><a href="milestones.html">Milestones</a><a href="approach.html">Approach</a><a href="ethics.html" aria-current="page">Risks &amp; Ethics</a><a href="team.html">Team</a></div></div></nav>
+<main class="container">
+<h1>Risks &amp; Ethics</h1>
+
+<h2>Pre-Mortem</h2>
+<p>The physics model could be too complex and multilayered. It could be too difficult for us to use the Unity cluster to get compute and start training runs. The RL model might not converge because we don't fully grasp reward function design for this use case. We might not be able to create a simulation that reflects true behavior in the real world, and as a result get an unusable controller. Finally, we could run out of time trying to make the simulation feel realistic, and as a result never get to the wall flipping or thrust vectoring behavior.</p>
+
+<h2>Ethics Screening</h2>
+<p><strong>Team management</strong>: Since our team is working together for both CompRobo and PIE, we will be spending a lot of time together and will need to make sure that we're constantly communicating with each other. We have a team structure where we have a PM, but we want to make sure everyone can speak up by creating an atmosphere that feels equal. To do this we plan on doing a team bonding event.</p>
+<p>When we are testing in the real world we have to be mindful of the fact that our model has only been validated in simulation and therefore we should anticipate erratic behavior and prepare ourselves and others in the vicinity accordingly.</p>
+<p><strong>Intended benefits</strong>: Our project has very similar hardware to a drone, but by always being in contact with the ground it can reduce the complexity of some of the computation that a drone would need to stay in the air. It is also equipped to move around in an urban setting with lots of buildings and doesn't have to worry about collision avoidance in the same way a drone would.</p>
+<p><strong>Code evaluation</strong>: Our code will predominantly be functioning in simulation. As a result, in order to validate it we will scrupulously be testing the inputted and output values of our networks to make sure they are valid in the context of what the value could take on in the real world. For instance, making sure the range of values our IR sensor inputs into the network reflect the values of the sensor we have in real life.</p>
+<p><strong>Communication transparency</strong>: We understand that our project progression will not be straight. We should be honest about where we feel stuck and rely on other team members and the teaching team for help. This way we don't inhibit the team further by trying to solve a problem individually when it could be solved more efficiently as a team.</p>
+</main>
+</body>
+</html>
