@@ -14,8 +14,57 @@
 <main class="container">
 <h1>Milestones</h1>
 
-<h2>Milestone 1 (Nov 22): Version 1 of Simulator Done</h2>
-<p>By Milestone 1, Isaac Sim and Isaac Lab will be installed and working on the Unity cluster for all teammates. The URDF file of our model will be exported and converted into USD, prop thrust will be applied as forces in the simulation, and a floor and a wall will be added to the simulation. The inputs (IR, IMU, gimbal, thrust) and outputs (gimbal, thrust) of our neural network will be defined in code. Finally, the RSL-RL framework will be set up to feed gradients into our policy from sim iterations. We can validate this using the random action agent feature to see if our network outputs anything at all through randomly scattered weights.</p>
+<h2>Milestone 1 Update (Nov 22)</h2>
+
+<h3>MVP and Stretch Goals</h3>
+<p>Our goals are unchanged from the proposal, because the simulator is on schedule. Our MVP is a policy in simulation that, given a target vector, drives the robot to match it, and that flips the robot from the floor onto a wall. Our stretch goal is to run the trained policy on our PIE robot (sim2real).</p>
+
+<h3>Set-Up Status</h3>
+<p>Isaac Sim, Isaac Lab 3.0, and RSL-RL are working. A full training run of 1500 PPO iterations with 4096 simulated robots takes about 11 minutes on a laptop GPU, and we have written the job scripts for training on the Unity cluster. The physical robot is being built in parallel for PIE, so the simulator uses placeholder thrust, mass, and IR sensor values until we can measure the real ones.</p>
+
+<h3>Major Components</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Component</th><th>Status</th></tr>
+<tr><td>Robot model (URDF converted to USD): chassis, four free wheels, two tilting propellers</td><td>Done</td></tr>
+<tr><td>Propeller thrust applied as forces, plus a floor and a wall</td><td>Done</td></tr>
+<tr><td>Policy inputs (IMU and two IR sensors) and outputs (propeller tilt and thrust)</td><td>Done</td></tr>
+<tr><td>PPO training with RSL-RL</td><td>Working</td></tr>
+<tr><td>Reward for staying on the wall</td><td>Working</td></tr>
+<tr><td>Reward for the floor-to-wall flip</td><td>In progress</td></tr>
+<tr><td>Following a target vector on the floor</td><td>Not started</td></tr>
+</table>
+</div>
+
+<h3>Results</h3>
+<p>Our first reward function let the robot drive to the wall and stop, and robots that started on the wall fell off. We changed the reward so that the robot only counts as being on the wall when its nose points up, ends the episode if it flips the wrong way or falls off the wall, and penalizes wobbling while it is on the wall. The robot now holds onto the wall steadily, but it does not yet flip onto the wall from the floor.</p>
+<div class="table-wrap">
+<table>
+<tr><th></th><th>First reward</th><th>Current reward</th></tr>
+<tr><td>Starts on the wall and stays on it</td><td>0%</td><td>100%</td></tr>
+<tr><td>Wobble while on the wall</td><td>0.37 rad/s</td><td>0.03 rad/s</td></tr>
+<tr><td>Flips onto the wall from the floor</td><td>0.4%</td><td>0%</td></tr>
+</table>
+</div>
+
+<figure>
+<video src="assets/videos/before_original_reward_floor_start.mp4" controls muted playsinline preload="metadata"></video>
+<figcaption>First reward: the robot drives to the wall and stops.</figcaption>
+</figure>
+<figure>
+<video src="assets/videos/now_wall_start_holds_on.mp4" controls muted playsinline preload="metadata"></video>
+<figcaption>Current reward, starting on the wall: the robot holds on steadily.</figcaption>
+</figure>
+<figure>
+<video src="assets/videos/now_floor_start_flip_attempt.mp4" controls muted playsinline preload="metadata"></video>
+<figcaption>Current reward, starting on the floor: the robot lifts its nose but falls back.</figcaption>
+</figure>
+
+<h3>Risks to the MVP</h3>
+<p>Our biggest risk is that the policy never learns the flip. The robot rarely finishes a flip by chance, so it gets little to learn from. To help, some training episodes now start partway through the flip, and we split the reward into stages: the robot first drives square to the wall (both IR sensors reading the same distance), and once the IR distance is about zero, it is rewarded for its pitch going from 0 to 90 degrees. Our second risk is that the simulation will not match the real robot, because the thrust, mass, and IR values are still placeholders. Our third risk is time, since following a target vector on the floor has not been started.</p>
+
+<h3>Goals for Milestone 2</h3>
+<p>By Milestone 2, we want the floor-to-wall flip to work from floor starts and to have the robot follow a target vector on the floor, which is the first part of our MVP. We also want to replace the placeholder values in the simulator with measurements from the real robot, and to have training curves and videos of both behaviors.</p>
 
 <h2>Milestone 2 (Dec 7): Model for Gimbal Trained</h2>
 <p>By Milestone 2, the reward function for following a target vector on the floor will be written and tuned, and we will train a policy with PPO that can follow target vectors on the floor. We will also write the reward function for the floor to wall flip and do our first training runs for it in simulation. We will have training curves, test results, and videos of the policy in simulation to show our progress.</p>

@@ -18,3 +18,10 @@ img.full { object-fit: contain; width: 100%; max-width: 800px; height: auto; mar
 .caption { color: var(--muted); font-size: .9rem; text-align: center; margin-top: -1.25rem; }
 .muted { color: var(--muted); }
 @media (max-width: 600px) { .links a { margin-left: 1rem; } }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: 1rem; }
+th, td { border: 1px solid #ddd; padding: .5rem .75rem; text-align: left; vertical-align: top; }
+th { background: #f6f6f6; }
+.table-wrap { overflow-x: auto; }
+figure { margin: 1.5rem 0; }
+video { width: 100%; max-width: 800px; display: block; margin: 0 auto; border: 1px solid #e5e5e5; }
+figcaption { color: var(--muted); font-size: .9rem; text-align: center; margin-top: .4rem; }
