@@ -20,8 +20,26 @@
 <p>Our goals are unchanged from the proposal, because the simulator is on schedule. Our MVP is a policy in simulation that, given a target vector, drives the robot to match it, and that flips the robot from the floor onto a wall. Our stretch goal is to run the trained policy on our PIE robot (sim2real).</p>
 
 <h3>Set-Up Status</h3>
-<p>Isaac Sim, Isaac Lab 3.0, and RSL-RL are working. A full training run of 1500 PPO iterations with 4096 simulated robots takes about 11 minutes on a laptop GPU, and we have written the job scripts for training on the Unity cluster. The physical robot is being built in parallel for PIE, so the simulator uses placeholder thrust, mass, and IR sensor values until we can measure the real ones.</p>
+<p>Isaac Lab 3.0 and RSL-RL are working, running on Isaac Lab's Newton physics engine instead of Isaac Sim (explained below). A full training run of 1500 PPO iterations with 4096 simulated robots takes about 11 minutes on a laptop GPU. We ran into issues getting set up on the Unity cluster, so for now all training has been done on that laptop GPU, but the setup and job scripts for Unity are written and ready. The physical robot is being built in parallel for PIE, so the simulator uses placeholder thrust, mass, and IR sensor values until we can measure the real ones.</p>
+<h3>Simulator: Newton Instead of Isaac Sim</h3>
+<p>We planned to use Isaac Sim, but ended up running Isaac Lab on its Newton physics backend and not using Isaac Sim at all. Isaac Lab 3.0 no longer requires Isaac Sim: the same task code can run on Newton, an open-source GPU physics engine developed by NVIDIA, Google DeepMind and Disney Research. We chose it for four reasons:</p>
+<ul>
+<li>We realized that we don't need what Isaac Sim adds. Isaac Sim's main extras are photorealistic rendering, camera sensors and the Omniverse editor. Our policy's inputs are the IMU, the IR sensors, the propeller tilt and thrust, none of which need rendering. We compute the IR readings directly by casting rays from the sensor positions to the floor and wall.</li>
+<li>The installation process was a lot simpler than Isaac Sim. Newton installs as ordinary Python packages, with no Isaac Sim or Omniverse runtime. On the Unity cluster this means no containers.</li>
+<li>Isaac Sim also needs more and RTX GPUs. Newton runs on any recent NVIDIA GPU, including Unity's A100s and RTX 2080 Tis.</li>
+<li>We found out that it was relatively fast enough to train on a laptop. Thousands of robots are simulated in parallel on one GPU, so a full training run takes minutes instead of hours.</li>
+</ul>
+<p>The trade-off is that we lose Isaac Sim's realistic visuals and editor. We use Newton's viewer and our own side-view animations to see what the policy does. Our task can also run on PhysX, Isaac Sim's physics engine, by changing one setting. We haven't tested that yet, but plan to use it later to check that a trained policy also works under a second physics engine before trying sim-to-real.</p>
 
+<h3>Unity Cluster</h3>
+<p>The setup and job scripts for Unity are written and ready in the <code>cluster/</code> folder of our repository:</p>
+<ul>
+<li><code>setup_unity.sh</code>: one-time setup. It installs uv, checks out Isaac Lab at the exact version we tested, and builds the Python environment in our group's <code>/work</code> storage.</li>
+<li><code>check_gpu.sbatch</code>: a short test job that checks the GPU and NVIDIA driver and runs our physics sanity tests on a compute node.</li>
+<li><code>train.sbatch</code>: the PPO training job. It requests only GPUs compatible with our PyTorch build (RTX 2080 Ti or newer). It resumes from its latest checkpoint if Unity's preemptible queue interrupts it, and it can launch several runs at once (for example, different random seeds) as a job array.</li>
+<li><code>sync_to_unity.sh</code> and <code>fetch_logs.sh</code>: copy our code to Unity and bring training logs and checkpoints back to our laptops.</li>
+</ul>
+<p>Once Unity access is working, we will use it to run many training experiments in parallel (reward variants, seeds and robot parameters).</p>
 <h3>Major Components</h3>
 <div class="table-wrap">
 <table>
@@ -33,6 +51,7 @@
 <tr><td>Reward for staying on the wall</td><td>Working</td></tr>
 <tr><td>Reward for the floor-to-wall flip</td><td>In progress</td></tr>
 <tr><td>Following a target vector on the floor</td><td>Not started</td></tr>
+<tr><td>Unity cluster setup and job scripts</td><td>Tested, but got errors</td></tr>
 </table>
 </div>
 
@@ -64,8 +83,7 @@
 <p>Our biggest risk is that the policy never learns the flip. The robot rarely finishes a flip by chance, so it gets little to learn from. To help, some training episodes now start partway through the flip, and we split the reward into stages: the robot first drives square to the wall (both IR sensors reading the same distance), and once the IR distance is about zero, it is rewarded for its pitch going from 0 to 90 degrees. Our second risk is that the simulation will not match the real robot, because the thrust, mass, and IR values are still placeholders. Our third risk is time, since following a target vector on the floor has not been started.</p>
 
 <h3>Goals for Milestone 2</h3>
-<p>By Milestone 2, we want the floor-to-wall flip to work from floor starts and to have the robot follow a target vector on the floor, which is the first part of our MVP. We also want to replace the placeholder values in the simulator with measurements from the real robot, and to have training curves and videos of both behaviors.</p>
-
+<p>By Milestone 2, we want the floor-to-wall flip to work from floor starts and to have the robot follow a target vector on the floor, which is the first part of our MVP. We also want to replace the placeholder values in the simulator with measurements from the real robot, including the measured propeller thrust, and to use a URDF exported from our CAD model. Because our real sensors (IMU and IR) cannot directly measure height or sliding on the wall, we plan to use the teacher&ndash;student method: train a teacher policy that sees the full simulator state, then distill it into a student that sees only the sensor inputs, and report its success rate from floor and wall starts. We will get the Unity cluster working for all teammates so we can run experiments in parallel. We will have training curves, evaluation tables, and videos of both behaviors.</p>
 <h2>Milestone 2 (Dec 7): Model for Gimbal Trained</h2>
 <p>By Milestone 2, the reward function for following a target vector on the floor will be written and tuned, and we will train a policy with PPO that can follow target vectors on the floor. We will also write the reward function for the floor to wall flip and do our first training runs for it in simulation. We will have training curves, test results, and videos of the policy in simulation to show our progress.</p>
 </main>
