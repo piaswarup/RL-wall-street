@@ -1,0 +1,398 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "URDF USD Converter v0.3.2"
+    }
+    defaultPrim = "vertigo"
+    doc = """Generated from Composed Stage of root layer /home/pswarup/.config/Claude/scratch-workspaces/50c10912-6f52-4661-a1f5-d6d6ad168776/87c5b2e9-4000-4c2b-acd6-69f89607d862/scratch-2026-11-22-1364af/vertigo_rl/src/vertigo_rl/assets/data/vertigo/usd/vertigo/.asset-transformer-90xxqil_/payloads/base.usd
+"""
+    endTimeCode = 1000000
+    kilogramsPerUnit = 1
+    metersPerUnit = 1
+    startTimeCode = 0
+    subLayers = [
+        @./robot.usda@
+    ]
+    upAxis = "Z"
+)
+
+def Xform "vertigo" (
+    prepend apiSchemas = ["GeomModelAPI", "IsaacRobotAPI"]
+    assetInfo = {
+        string name = "vertigo"
+    }
+    kind = "component"
+)
+{
+    float3[] extentsHint = [(-0.21, -0.24, -0.06), (0.21, 0.24, 0.17), (3.4028235e38, 3.4028235e38, 3.4028235e38), (-3.4028235e38, -3.4028235e38, -3.4028235e38), (3.4028235e38, 3.4028235e38, 3.4028235e38), (-3.4028235e38, -3.4028235e38, -3.4028235e38), (-0.21, -0.24, -0.06), (0.21, 0.24, 0.08)]
+    custom rel isaac:physics:robotJoints
+    custom rel isaac:physics:robotLinks
+    custom token isaac:robotType = "Default"
+
+    def Scope "Materials"
+    {
+        def Material "chassis" (
+            instanceable = true
+            prepend references = @./materials.usda@</Materials/chassis>
+        )
+        {
+        }
+
+        def Material "tire" (
+            instanceable = true
+            prepend references = @./materials.usda@</Materials/tire>
+        )
+        {
+        }
+
+        def Material "front_prop" (
+            instanceable = true
+            prepend references = @./materials.usda@</Materials/front_prop>
+        )
+        {
+        }
+
+        def Material "airflow" (
+            instanceable = true
+            prepend references = @./materials.usda@</Materials/airflow>
+        )
+        {
+        }
+
+        def Material "rear_prop" (
+            instanceable = true
+            prepend references = @./materials.usda@</Materials/rear_prop>
+        )
+        {
+        }
+    }
+
+    def Scope "Geometry"
+    {
+        def Xform "base_link" (
+            prepend apiSchemas = ["IsaacLinkAPI"]
+        )
+        {
+            def Cube "box" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                rel material:binding = </vertigo/Materials/chassis>
+                double size = 1
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (0.36, 0.3, 0.06)
+                double3 xformOp:translate = (0, 0, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            def Xform "wheel_fl" (
+                prepend apiSchemas = ["IsaacLinkAPI"]
+            )
+            {
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0.15, 0.18, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                def Sphere "sphere" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    float3[] extent = [(-0.06, -0.06, -0.06), (0.06, 0.06, 0.06)]
+                    rel material:binding = </vertigo/Materials/tire>
+                    double radius = 0.06
+                    quatf xformOp:orient = (1, 0, 0, 0)
+                    float3 xformOp:scale = (1, 1, 1)
+                    double3 xformOp:translate = (0, 0, 0)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                }
+
+                def Sphere "sphere_1" (
+                    prepend apiSchemas = ["PhysicsCollisionAPI"]
+                    displayName = "sphere"
+                    uiHints = {
+                        string displayName = "sphere"
+                    }
+                )
+                {
+                    float3[] extent = [(-0.06, -0.06, -0.06), (0.06, 0.06, 0.06)]
+                    uniform token purpose = "guide"
+                    double radius = 0.06
+                    quatf xformOp:orient = (1, 0, 0, 0)
+                    float3 xformOp:scale = (1, 1, 1)
+                    double3 xformOp:translate = (0, 0, 0)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                }
+            }
+
+            def Xform "wheel_fr" (
+                prepend apiSchemas = ["IsaacLinkAPI"]
+            )
+            {
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0.15, -0.18, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                def Sphere "sphere" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    float3[] extent = [(-0.06, -0.06, -0.06), (0.06, 0.06, 0.06)]
+                    rel material:binding = </vertigo/Materials/tire>
+                    double radius = 0.06
+                    quatf xformOp:orient = (1, 0, 0, 0)
+                    float3 xformOp:scale = (1, 1, 1)
+                    double3 xformOp:translate = (0, 0, 0)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                }
+
+                def Sphere "sphere_1" (
+                    prepend apiSchemas = ["PhysicsCollisionAPI"]
+                    displayName = "sphere"
+                    uiHints = {
+                        string displayName = "sphere"
+                    }
+                )
+                {
+                    float3[] extent = [(-0.06, -0.06, -0.06), (0.06, 0.06, 0.06)]
+                    uniform token purpose = "guide"
+                    double radius = 0.06
+                    quatf xformOp:orient = (1, 0, 0, 0)
+                    float3 xformOp:scale = (1, 1, 1)
+                    double3 xformOp:translate = (0, 0, 0)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                }
+            }
+
+            def Xform "wheel_rl" (
+                prepend apiSchemas = ["IsaacLinkAPI"]
+            )
+            {
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-0.15, 0.18, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                def Sphere "sphere" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    float3[] extent = [(-0.06, -0.06, -0.06), (0.06, 0.06, 0.06)]
+                    rel material:binding = </vertigo/Materials/tire>
+                    double radius = 0.06
+                    quatf xformOp:orient = (1, 0, 0, 0)
+                    float3 xformOp:scale = (1, 1, 1)
+                    double3 xformOp:translate = (0, 0, 0)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                }
+
+                def Sphere "sphere_1" (
+                    prepend apiSchemas = ["PhysicsCollisionAPI"]
+                    displayName = "sphere"
+                    uiHints = {
+                        string displayName = "sphere"
+                    }
+                )
+                {
+                    float3[] extent = [(-0.06, -0.06, -0.06), (0.06, 0.06, 0.06)]
+                    uniform token purpose = "guide"
+                    double radius = 0.06
+                    quatf xformOp:orient = (1, 0, 0, 0)
+                    float3 xformOp:scale = (1, 1, 1)
+                    double3 xformOp:translate = (0, 0, 0)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                }
+            }
+
+            def Xform "wheel_rr" (
+                prepend apiSchemas = ["IsaacLinkAPI"]
+            )
+            {
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-0.15, -0.18, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                def Sphere "sphere" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    float3[] extent = [(-0.06, -0.06, -0.06), (0.06, 0.06, 0.06)]
+                    rel material:binding = </vertigo/Materials/tire>
+                    double radius = 0.06
+                    quatf xformOp:orient = (1, 0, 0, 0)
+                    float3 xformOp:scale = (1, 1, 1)
+                    double3 xformOp:translate = (0, 0, 0)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                }
+
+                def Sphere "sphere_1" (
+                    prepend apiSchemas = ["PhysicsCollisionAPI"]
+                    displayName = "sphere"
+                    uiHints = {
+                        string displayName = "sphere"
+                    }
+                )
+                {
+                    float3[] extent = [(-0.06, -0.06, -0.06), (0.06, 0.06, 0.06)]
+                    uniform token purpose = "guide"
+                    double radius = 0.06
+                    quatf xformOp:orient = (1, 0, 0, 0)
+                    float3 xformOp:scale = (1, 1, 1)
+                    double3 xformOp:translate = (0, 0, 0)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                }
+            }
+
+            def Xform "front_prop" (
+                prepend apiSchemas = ["IsaacLinkAPI"]
+            )
+            {
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0.11, 0, 0.07)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                def Cylinder "cylinder" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    uniform token axis = "Z"
+                    float3[] extent = [(-0.09, -0.09, -0.0025), (0.09, 0.09, 0.0025)]
+                    double height = 0.005
+                    rel material:binding = </vertigo/Materials/front_prop>
+                    double radius = 0.09
+                    quatf xformOp:orient = (1, 0, 0, 0)
+                    float3 xformOp:scale = (1, 1, 1)
+                    double3 xformOp:translate = (0, 0, 0)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                }
+
+                def Cylinder "cylinder_1" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                    displayName = "cylinder"
+                    uiHints = {
+                        string displayName = "cylinder"
+                    }
+                )
+                {
+                    uniform token axis = "Z"
+                    float3[] extent = [(-0.006, -0.006, -0.05), (0.006, 0.006, 0.05)]
+                    double height = 0.1
+                    rel material:binding = </vertigo/Materials/airflow>
+                    double radius = 0.006
+                    quatf xformOp:orient = (1, 0, 0, 0)
+                    float3 xformOp:scale = (1, 1, 1)
+                    double3 xformOp:translate = (0, 0, 0.05)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                }
+
+                def Cylinder "cylinder_2" (
+                    prepend apiSchemas = ["PhysicsCollisionAPI"]
+                    displayName = "cylinder"
+                    uiHints = {
+                        string displayName = "cylinder"
+                    }
+                )
+                {
+                    uniform token axis = "Z"
+                    float3[] extent = [(-0.09, -0.09, -0.01), (0.09, 0.09, 0.01)]
+                    double height = 0.02
+                    uniform token purpose = "guide"
+                    double radius = 0.09
+                    quatf xformOp:orient = (1, 0, 0, 0)
+                    float3 xformOp:scale = (1, 1, 1)
+                    double3 xformOp:translate = (0, 0, 0)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                }
+            }
+
+            def Xform "rear_prop" (
+                prepend apiSchemas = ["IsaacLinkAPI"]
+            )
+            {
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-0.11, 0, 0.07)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                def Cylinder "cylinder" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    uniform token axis = "Z"
+                    float3[] extent = [(-0.09, -0.09, -0.0025), (0.09, 0.09, 0.0025)]
+                    double height = 0.005
+                    rel material:binding = </vertigo/Materials/rear_prop>
+                    double radius = 0.09
+                    quatf xformOp:orient = (1, 0, 0, 0)
+                    float3 xformOp:scale = (1, 1, 1)
+                    double3 xformOp:translate = (0, 0, 0)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                }
+
+                def Cylinder "cylinder_1" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                    displayName = "cylinder"
+                    uiHints = {
+                        string displayName = "cylinder"
+                    }
+                )
+                {
+                    uniform token axis = "Z"
+                    float3[] extent = [(-0.006, -0.006, -0.05), (0.006, 0.006, 0.05)]
+                    double height = 0.1
+                    rel material:binding = </vertigo/Materials/airflow>
+                    double radius = 0.006
+                    quatf xformOp:orient = (1, 0, 0, 0)
+                    float3 xformOp:scale = (1, 1, 1)
+                    double3 xformOp:translate = (0, 0, 0.05)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                }
+
+                def Cylinder "cylinder_2" (
+                    prepend apiSchemas = ["PhysicsCollisionAPI"]
+                    displayName = "cylinder"
+                    uiHints = {
+                        string displayName = "cylinder"
+                    }
+                )
+                {
+                    uniform token axis = "Z"
+                    float3[] extent = [(-0.09, -0.09, -0.01), (0.09, 0.09, 0.01)]
+                    double height = 0.02
+                    uniform token purpose = "guide"
+                    double radius = 0.09
+                    quatf xformOp:orient = (1, 0, 0, 0)
+                    float3 xformOp:scale = (1, 1, 1)
+                    double3 xformOp:translate = (0, 0, 0)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                }
+            }
+
+            def Cube "box_1" (
+                prepend apiSchemas = ["PhysicsCollisionAPI"]
+                displayName = "box"
+                uiHints = {
+                    string displayName = "box"
+                }
+            )
+            {
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                uniform token purpose = "guide"
+                double size = 1
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (0.36, 0.3, 0.06)
+                double3 xformOp:translate = (0, 0, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+        }
+    }
+
+    def Scope "Physics"
+    {
+    }
+}
+

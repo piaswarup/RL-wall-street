@@ -1,0 +1,264 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "URDF USD Converter v0.3.2"
+    }
+    defaultPrim = "vertigo"
+    endTimeCode = 1000000
+    kilogramsPerUnit = 1
+    metersPerUnit = 1
+    startTimeCode = 0
+    upAxis = "Z"
+)
+
+over "vertigo"
+{
+    over "Geometry"
+    {
+        over "base_link" (
+            prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsArticulationRootAPI", "NewtonArticulationRootAPI", "PhysicsMassAPI", "NewtonMassAPI"]
+        )
+        {
+            double[] newton:inertia = [0.01209, 0.017205, 0.028365, 0, 0, 0]
+            bool newton:selfCollisionEnabled = 0
+            point3f physics:centerOfMass = (0, 0, 0)
+            float3 physics:diagonalInertia = (0.01209, 0.017205, 0.028365)
+            float physics:mass = 1.55
+            quatf physics:principalAxes = (1, 0, 0, 0)
+
+            over "wheel_fl" (
+                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI", "NewtonMassAPI"]
+            )
+            {
+                double[] newton:inertia = [0.0000864, 0.0000864, 0.0000864, 0, 0, 0]
+                point3f physics:centerOfMass = (0, 0, 0)
+                float3 physics:diagonalInertia = (0.0000864, 0.0000864, 0.0000864)
+                float physics:mass = 0.06
+                quatf physics:principalAxes = (1, 0, 0, 0)
+
+                over "sphere_1" (
+                    prepend apiSchemas = ["NewtonCollisionAPI"]
+                )
+                {
+                }
+            }
+
+            over "wheel_fr" (
+                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI", "NewtonMassAPI"]
+            )
+            {
+                double[] newton:inertia = [0.0000864, 0.0000864, 0.0000864, 0, 0, 0]
+                point3f physics:centerOfMass = (0, 0, 0)
+                float3 physics:diagonalInertia = (0.0000864, 0.0000864, 0.0000864)
+                float physics:mass = 0.06
+                quatf physics:principalAxes = (1, 0, 0, 0)
+
+                over "sphere_1" (
+                    prepend apiSchemas = ["NewtonCollisionAPI"]
+                )
+                {
+                }
+            }
+
+            over "wheel_rl" (
+                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI", "NewtonMassAPI"]
+            )
+            {
+                double[] newton:inertia = [0.0000864, 0.0000864, 0.0000864, 0, 0, 0]
+                point3f physics:centerOfMass = (0, 0, 0)
+                float3 physics:diagonalInertia = (0.0000864, 0.0000864, 0.0000864)
+                float physics:mass = 0.06
+                quatf physics:principalAxes = (1, 0, 0, 0)
+
+                over "sphere_1" (
+                    prepend apiSchemas = ["NewtonCollisionAPI"]
+                )
+                {
+                }
+            }
+
+            over "wheel_rr" (
+                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI", "NewtonMassAPI"]
+            )
+            {
+                double[] newton:inertia = [0.0000864, 0.0000864, 0.0000864, 0, 0, 0]
+                point3f physics:centerOfMass = (0, 0, 0)
+                float3 physics:diagonalInertia = (0.0000864, 0.0000864, 0.0000864)
+                float physics:mass = 0.06
+                quatf physics:principalAxes = (1, 0, 0, 0)
+
+                over "sphere_1" (
+                    prepend apiSchemas = ["NewtonCollisionAPI"]
+                )
+                {
+                }
+            }
+
+            over "front_prop" (
+                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI", "NewtonMassAPI"]
+            )
+            {
+                double[] newton:inertia = [0.000037625, 0.000037625, 0.00004725, 0, 0, 0]
+                point3f physics:centerOfMass = (0, 0, 0)
+                float3 physics:diagonalInertia = (0.000037625, 0.000037625, 0.00004725)
+                float physics:mass = 0.105
+                quatf physics:principalAxes = (1, 0, 0, 0)
+
+                over "cylinder_2" (
+                    prepend apiSchemas = ["NewtonCollisionAPI"]
+                )
+                {
+                }
+            }
+
+            over "rear_prop" (
+                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI", "NewtonMassAPI"]
+            )
+            {
+                double[] newton:inertia = [0.000037625, 0.000037625, 0.00004725, 0, 0, 0]
+                point3f physics:centerOfMass = (0, 0, 0)
+                float3 physics:diagonalInertia = (0.000037625, 0.000037625, 0.00004725)
+                float physics:mass = 0.105
+                quatf physics:principalAxes = (1, 0, 0, 0)
+
+                over "cylinder_2" (
+                    prepend apiSchemas = ["NewtonCollisionAPI"]
+                )
+                {
+                }
+            }
+
+            over "box_1" (
+                prepend apiSchemas = ["NewtonCollisionAPI"]
+            )
+            {
+            }
+        }
+    }
+
+    over "Physics"
+    {
+        def PhysicsRevoluteJoint "wheel_fl" (
+            prepend apiSchemas = ["NewtonJointAPI", "PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+        )
+        {
+            float drive:angular:physics:damping = 0.017453292
+            float drive:angular:physics:stiffness = 1.7453293
+            uniform token drive:angular:physics:type = "force"
+            float newton:velocityLimit = 5729.578
+            uniform token physics:axis = "Y"
+            custom rel physics:body0
+            append rel physics:body0 = </vertigo/Geometry/base_link>
+            custom rel physics:body1
+            append rel physics:body1 = </vertigo/Geometry/base_link/wheel_fl>
+            point3f physics:localPos0 = (0.15, 0.18, 0)
+            point3f physics:localPos1 = (0, 0, 0)
+            quatf physics:localRot0 = (1, 0, 0, 0)
+            quatf physics:localRot1 = (1, 0, 0, 0)
+            custom float urdf:limit:effort = 0
+        }
+
+        def PhysicsRevoluteJoint "wheel_fr" (
+            prepend apiSchemas = ["NewtonJointAPI", "PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+        )
+        {
+            float drive:angular:physics:damping = 0.017453292
+            float drive:angular:physics:stiffness = 1.7453293
+            uniform token drive:angular:physics:type = "force"
+            float newton:velocityLimit = 5729.578
+            uniform token physics:axis = "Y"
+            custom rel physics:body0
+            append rel physics:body0 = </vertigo/Geometry/base_link>
+            custom rel physics:body1
+            append rel physics:body1 = </vertigo/Geometry/base_link/wheel_fr>
+            point3f physics:localPos0 = (0.15, -0.18, 0)
+            point3f physics:localPos1 = (0, 0, 0)
+            quatf physics:localRot0 = (1, 0, 0, 0)
+            quatf physics:localRot1 = (1, 0, 0, 0)
+            custom float urdf:limit:effort = 0
+        }
+
+        def PhysicsRevoluteJoint "wheel_rl" (
+            prepend apiSchemas = ["NewtonJointAPI", "PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+        )
+        {
+            float drive:angular:physics:damping = 0.017453292
+            float drive:angular:physics:stiffness = 1.7453293
+            uniform token drive:angular:physics:type = "force"
+            float newton:velocityLimit = 5729.578
+            uniform token physics:axis = "Y"
+            custom rel physics:body0
+            append rel physics:body0 = </vertigo/Geometry/base_link>
+            custom rel physics:body1
+            append rel physics:body1 = </vertigo/Geometry/base_link/wheel_rl>
+            point3f physics:localPos0 = (-0.15, 0.18, 0)
+            point3f physics:localPos1 = (0, 0, 0)
+            quatf physics:localRot0 = (1, 0, 0, 0)
+            quatf physics:localRot1 = (1, 0, 0, 0)
+            custom float urdf:limit:effort = 0
+        }
+
+        def PhysicsRevoluteJoint "wheel_rr" (
+            prepend apiSchemas = ["NewtonJointAPI", "PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+        )
+        {
+            float drive:angular:physics:damping = 0.017453292
+            float drive:angular:physics:stiffness = 1.7453293
+            uniform token drive:angular:physics:type = "force"
+            float newton:velocityLimit = 5729.578
+            uniform token physics:axis = "Y"
+            custom rel physics:body0
+            append rel physics:body0 = </vertigo/Geometry/base_link>
+            custom rel physics:body1
+            append rel physics:body1 = </vertigo/Geometry/base_link/wheel_rr>
+            point3f physics:localPos0 = (-0.15, -0.18, 0)
+            point3f physics:localPos1 = (0, 0, 0)
+            quatf physics:localRot0 = (1, 0, 0, 0)
+            quatf physics:localRot1 = (1, 0, 0, 0)
+            custom float urdf:limit:effort = 0
+        }
+
+        def PhysicsRevoluteJoint "front_tilt" (
+            prepend apiSchemas = ["NewtonJointAPI", "PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+        )
+        {
+            float drive:angular:physics:damping = 0.017453292
+            float drive:angular:physics:maxForce = 5
+            float drive:angular:physics:stiffness = 1.7453293
+            uniform token drive:angular:physics:type = "force"
+            float newton:velocityLimit = 458.36624
+            uniform token physics:axis = "Y"
+            custom rel physics:body0
+            append rel physics:body0 = </vertigo/Geometry/base_link>
+            custom rel physics:body1
+            append rel physics:body1 = </vertigo/Geometry/base_link/front_prop>
+            point3f physics:localPos0 = (0.11, 0, 0.07)
+            point3f physics:localPos1 = (0, 0, 0)
+            quatf physics:localRot0 = (1, 0, 0, 0)
+            quatf physics:localRot1 = (1, 0, 0, 0)
+            custom float urdf:limit:effort = 5
+        }
+
+        def PhysicsRevoluteJoint "rear_tilt" (
+            prepend apiSchemas = ["NewtonJointAPI", "PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+        )
+        {
+            float drive:angular:physics:damping = 0.017453292
+            float drive:angular:physics:maxForce = 5
+            float drive:angular:physics:stiffness = 1.7453293
+            uniform token drive:angular:physics:type = "force"
+            float newton:velocityLimit = 458.36624
+            uniform token physics:axis = "Y"
+            custom rel physics:body0
+            append rel physics:body0 = </vertigo/Geometry/base_link>
+            custom rel physics:body1
+            append rel physics:body1 = </vertigo/Geometry/base_link/rear_prop>
+            point3f physics:localPos0 = (-0.11, 0, 0.07)
+            point3f physics:localPos1 = (0, 0, 0)
+            quatf physics:localRot0 = (1, 0, 0, 0)
+            quatf physics:localRot1 = (1, 0, 0, 0)
+            custom float urdf:limit:effort = 5
+        }
+    }
+}
+

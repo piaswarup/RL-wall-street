@@ -1,0 +1,170 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "URDF USD Converter v0.3.2"
+    }
+    endTimeCode = 1000000
+    kilogramsPerUnit = 1
+    metersPerUnit = 1
+    startTimeCode = 0
+    upAxis = "Z"
+)
+
+def Scope "Materials"
+{
+    def Material "chassis"
+    {
+        color3f inputs:diffuseColor = (0.01960664, 0.10048152, 0.52252156)
+        float inputs:metallic = 0
+        float inputs:opacity = 1
+        float inputs:roughness = 0.5
+        token inputs:wrapMode = "repeat"
+        token outputs:displacement (
+            displayGroup = "Outputs"
+        )
+        token outputs:surface (
+            displayGroup = "Outputs"
+        )
+        prepend token outputs:surface.connect = </Materials/chassis/PreviewSurface.outputs:surface>
+        token outputs:volume (
+            displayGroup = "Outputs"
+        )
+
+        def Shader "PreviewSurface" (
+            apiSchemas = ["NodeDefAPI"]
+        )
+        {
+            token info:id = "UsdPreviewSurface"
+            prepend color3f inputs:diffuseColor.connect = </Materials/chassis.inputs:diffuseColor>
+            prepend float inputs:metallic.connect = </Materials/chassis.inputs:metallic>
+            prepend float inputs:opacity.connect = </Materials/chassis.inputs:opacity>
+            prepend float inputs:roughness.connect = </Materials/chassis.inputs:roughness>
+            token outputs:surface
+        }
+    }
+
+    def Material "tire"
+    {
+        color3f inputs:diffuseColor = (0.010022825, 0.010022826, 0.010022825)
+        float inputs:metallic = 0
+        float inputs:opacity = 1
+        float inputs:roughness = 0.5
+        token inputs:wrapMode = "repeat"
+        token outputs:displacement (
+            displayGroup = "Outputs"
+        )
+        token outputs:surface (
+            displayGroup = "Outputs"
+        )
+        prepend token outputs:surface.connect = </Materials/tire/PreviewSurface.outputs:surface>
+        token outputs:volume (
+            displayGroup = "Outputs"
+        )
+
+        def Shader "PreviewSurface" (
+            apiSchemas = ["NodeDefAPI"]
+        )
+        {
+            token info:id = "UsdPreviewSurface"
+            prepend color3f inputs:diffuseColor.connect = </Materials/tire.inputs:diffuseColor>
+            prepend float inputs:metallic.connect = </Materials/tire.inputs:metallic>
+            prepend float inputs:opacity.connect = </Materials/tire.inputs:opacity>
+            prepend float inputs:roughness.connect = </Materials/tire.inputs:roughness>
+            token outputs:surface
+        }
+    }
+
+    def Material "front_prop"
+    {
+        color3f inputs:diffuseColor = (0.78741235, 0.13286833, 0.010022824)
+        float inputs:metallic = 0
+        float inputs:opacity = 0.6
+        float inputs:roughness = 0.5
+        token inputs:wrapMode = "repeat"
+        token outputs:displacement (
+            displayGroup = "Outputs"
+        )
+        token outputs:surface (
+            displayGroup = "Outputs"
+        )
+        prepend token outputs:surface.connect = </Materials/front_prop/PreviewSurface.outputs:surface>
+        token outputs:volume (
+            displayGroup = "Outputs"
+        )
+
+        def Shader "PreviewSurface" (
+            apiSchemas = ["NodeDefAPI"]
+        )
+        {
+            token info:id = "UsdPreviewSurface"
+            prepend color3f inputs:diffuseColor.connect = </Materials/front_prop.inputs:diffuseColor>
+            prepend float inputs:metallic.connect = </Materials/front_prop.inputs:metallic>
+            prepend float inputs:opacity.connect = </Materials/front_prop.inputs:opacity>
+            prepend float inputs:roughness.connect = </Materials/front_prop.inputs:roughness>
+            token outputs:surface
+        }
+    }
+
+    def Material "airflow"
+    {
+        color3f inputs:diffuseColor = (1, 2.0954758e-9, 1.8626451e-9)
+        float inputs:metallic = 0
+        float inputs:opacity = 1
+        float inputs:roughness = 0.5
+        token inputs:wrapMode = "repeat"
+        token outputs:displacement (
+            displayGroup = "Outputs"
+        )
+        token outputs:surface (
+            displayGroup = "Outputs"
+        )
+        prepend token outputs:surface.connect = </Materials/airflow/PreviewSurface.outputs:surface>
+        token outputs:volume (
+            displayGroup = "Outputs"
+        )
+
+        def Shader "PreviewSurface" (
+            apiSchemas = ["NodeDefAPI"]
+        )
+        {
+            token info:id = "UsdPreviewSurface"
+            prepend color3f inputs:diffuseColor.connect = </Materials/airflow.inputs:diffuseColor>
+            prepend float inputs:metallic.connect = </Materials/airflow.inputs:metallic>
+            prepend float inputs:opacity.connect = </Materials/airflow.inputs:opacity>
+            prepend float inputs:roughness.connect = </Materials/airflow.inputs:roughness>
+            token outputs:surface
+        }
+    }
+
+    def Material "rear_prop"
+    {
+        color3f inputs:diffuseColor = (0.03310471, 0.6038274, 0.073238954)
+        float inputs:metallic = 0
+        float inputs:opacity = 0.6
+        float inputs:roughness = 0.5
+        token inputs:wrapMode = "repeat"
+        token outputs:displacement (
+            displayGroup = "Outputs"
+        )
+        token outputs:surface (
+            displayGroup = "Outputs"
+        )
+        prepend token outputs:surface.connect = </Materials/rear_prop/PreviewSurface.outputs:surface>
+        token outputs:volume (
+            displayGroup = "Outputs"
+        )
+
+        def Shader "PreviewSurface" (
+            apiSchemas = ["NodeDefAPI"]
+        )
+        {
+            token info:id = "UsdPreviewSurface"
+            prepend color3f inputs:diffuseColor.connect = </Materials/rear_prop.inputs:diffuseColor>
+            prepend float inputs:metallic.connect = </Materials/rear_prop.inputs:metallic>
+            prepend float inputs:opacity.connect = </Materials/rear_prop.inputs:opacity>
+            prepend float inputs:roughness.connect = </Materials/rear_prop.inputs:roughness>
+            token outputs:surface
+        }
+    }
+}
+
