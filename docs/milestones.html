@@ -23,7 +23,7 @@
 <div class="table-wrap">
 <table>
 <tr><th>Milestone 1 goal from our proposal</th><th>Status</th><th>Notes</th></tr>
-<tr><td>Isaac Sim and Isaac Lab working on the Unity cluster</td><td>Partly</td><td>Isaac Lab 3.0 runs on our laptops, where a full training run takes about 11 minutes. The Unity cluster job scripts are written; running them on the cluster is next.</td></tr>
+<tr><td>Isaac Sim and Isaac Lab working on the Unity cluster</td><td>Partly, changed</td><td>We use Isaac Lab 3.0 on its Newton physics engine instead of Isaac Sim (explained below). We ran into errors setting up on the Unity cluster, so all training so far has been on a laptop GPU, where a full run takes about 11 minutes. The Unity setup and job scripts are written and ready.</td></tr>
 <tr><td>URDF of the robot exported and converted to USD</td><td>Done, changed</td><td>Instead of exporting from CAD, we generate a simplified URDF from a script with the real robot's dimensions (box chassis, sphere wheels, disc propellers). It is easier to keep in sync with the hardware as it changes.</td></tr>
 <tr><td>Propeller thrust applied as forces</td><td>Done</td><td>Thrust is a force along each tilting propeller's axis, with a 50 ms spin-up lag and counter-rotating reaction torque.</td></tr>
 <tr><td>Floor and wall added to the simulation</td><td>Done</td><td>Each robot gets its own floor and a 3 m tall wall, and 4096 robots are simulated in parallel.</td></tr>
@@ -33,7 +33,27 @@
 </div>
 
 <h3>Set-Up Status</h3>
-<p>Our software stack is Isaac Sim, Isaac Lab 3.0 (Newton physics), and RSL-RL's PPO. We train 4096 simulated robots at once for 1500 iterations. The physical robot is being built in parallel for PIE, so the simulator uses placeholder values for thrust (15.7 N per propeller), mass (2 kg), and IR sensor range (3 to 80 cm) until we can measure the real ones.</p>
+<p>Isaac Lab 3.0 and RSL-RL are working, running on Isaac Lab's Newton physics engine instead of Isaac Sim (explained below). A full training run of 1500 PPO iterations with 4096 simulated robots takes about 11 minutes on a laptop GPU. We ran into issues getting set up on the Unity cluster, so for now all training has been done on that laptop GPU, but the setup and job scripts for Unity are written and ready. The physical robot is being built in parallel for PIE, so the simulator uses placeholder values for thrust (15.7 N per propeller), mass (2 kg), and IR sensor range (3 to 80 cm) until we can measure the real ones.</p>
+<h3>Simulator: Newton Instead of Isaac Sim</h3>
+<p>We planned to use Isaac Sim, but ended up running Isaac Lab on its Newton physics backend and not using Isaac Sim at all. Isaac Lab 3.0 no longer requires Isaac Sim: the same task code can run on Newton, an open-source GPU physics engine developed by NVIDIA, Google DeepMind and Disney Research. We chose it for four reasons:</p>
+<ul>
+<li>We realized that we don't need what Isaac Sim adds. Isaac Sim's main extras are photorealistic rendering, camera sensors and the Omniverse editor. Our policy's inputs are the IMU, the IR sensors, the propeller tilt and thrust, none of which need rendering. We compute the IR readings directly by casting rays from the sensor positions to the floor and wall.</li>
+<li>The installation process was a lot simpler than Isaac Sim. Newton installs as ordinary Python packages, with no Isaac Sim or Omniverse runtime. On the Unity cluster this means no containers.</li>
+<li>Isaac Sim also needs more and RTX GPUs. Newton runs on any recent NVIDIA GPU, including Unity's A100s and RTX 2080 Tis.</li>
+<li>We found out that it was relatively fast enough to train on a laptop. Thousands of robots are simulated in parallel on one GPU, so a full training run takes minutes instead of hours.</li>
+</ul>
+<p>The trade-off is that we lose Isaac Sim's realistic visuals and editor. We use Newton's viewer and our own side-view animations to see what the policy does. Our task can also run on PhysX, Isaac Sim's physics engine, by changing one setting. We haven't tested that yet, but plan to use it later to check that a trained policy also works under a second physics engine before trying sim-to-real.</p>
+
+<h3>Unity Cluster</h3>
+<p>The setup and job scripts for Unity are written and ready in the <code>cluster/</code> folder of our repository:</p>
+<ul>
+<li><code>setup_unity.sh</code>: one-time setup. It installs uv, checks out Isaac Lab at the exact version we tested, and builds the Python environment in our group's <code>/work</code> storage.</li>
+<li><code>check_gpu.sbatch</code>: a short test job that checks the GPU and NVIDIA driver and runs our physics sanity tests on a compute node.</li>
+<li><code>train.sbatch</code>: the PPO training job. It requests only GPUs compatible with our PyTorch build (RTX 2080 Ti or newer). It resumes from its latest checkpoint if Unity's preemptible queue interrupts it, and it can launch several runs at once (for example, different random seeds) as a job array.</li>
+<li><code>sync_to_unity.sh</code> and <code>fetch_logs.sh</code>: copy our code to Unity and bring training logs and checkpoints back to our laptops.</li>
+</ul>
+<p>Once Unity access is working, we will use it to run many training experiments in parallel (reward variants, seeds and robot parameters).</p>
+
 
 <h3>Major Components</h3>
 <div class="table-wrap">
@@ -46,6 +66,7 @@
 <tr><td>Reward: staying on the wall</td><td>Working</td><td>Robots that start on the wall stay on it with almost no wobble, but they climb past the top of the wall instead of stopping.</td></tr>
 <tr><td>Reward: floor-to-wall flip</td><td>Troubleshooting</td><td>About 1 in 5 robots pitch up past 80 degrees, then fall instead of landing on the wall. Being retrained with the fixed IR sensors.</td></tr>
 <tr><td>Following a target vector on the floor</td><td>Not started</td><td>Postponed to put the flip first.</td></tr>
+<tr><td>Unity cluster setup and job scripts</td><td>Tested, but got errors</td><td>Setup on Unity failed, so all training so far has run on a laptop GPU. The scripts are written and ready.</td></tr>
 </table>
 </div>
 
@@ -96,9 +117,12 @@
 <tr><td>Floor-to-wall flip works from floor starts in at least half of simulated attempts, retrained with the fixed IR sensors</td><td>Ambitious</td><td>First, start more episodes partway through the flip and give the flip a larger share of the reward. If it still fails by Dec 1, train the flip as its own policy that starts at the wall, and show the full maneuver as two policies chained together.</td></tr>
 <tr><td>Robots on the wall stop at the commanded height instead of climbing past the top</td><td>Realistic</td><td>End the episode with a penalty above the target height, so climbing too far is never worth it.</td></tr>
 <tr><td>Following a target vector on the floor (MVP part 1)</td><td>Realistic</td><td>Start with straight-line driving at a commanded speed, then add turning if time allows.</td></tr>
-<tr><td>Measured thrust, mass, and IR range from the PIE robot in the simulator</td><td>Realistic if the hardware is ready</td><td>Randomize those values over a plausible range during training, so the policy does not depend on their exact values.</td></tr>
+<tr><td>Measured propeller thrust, mass, and IR range from the PIE robot in the simulator</td><td>Realistic if the hardware is ready</td><td>Randomize those values over a plausible range during training, so the policy does not depend on their exact values.</td></tr>
+<tr><td>Robot model built from a URDF exported from our CAD model</td><td>Realistic</td><td>Keep the script-generated URDF and update its dimensions and masses to match the CAD model.</td></tr>
+<tr><td>Teacher&ndash;student training: a teacher policy that sees the full simulator state, distilled into a student that sees only the IMU and IR sensors (which cannot directly measure height or sliding on the wall), with the student's success rate reported from floor and wall starts</td><td>Ambitious</td><td>Report the teacher's results and how far the student falls short, and give the student a longer sensor history so it can infer more of the missing state.</td></tr>
+<tr><td>Unity cluster working for all teammates, so we can run experiments in parallel</td><td>Realistic</td><td>Keep training on our laptops, where one run takes about 11 minutes, and run experiments one after another.</td></tr>
 <tr><td>Every sensor and reward change checked with a scripted test before training</td><td>Realistic</td><td>Not optional: this is how we found the IR bug.</td></tr>
-<tr><td>Training curves and videos for each behavior</td><td>Realistic</td><td>None needed: these come out of every training run.</td></tr>
+<tr><td>Training curves, evaluation tables, and videos for each behavior</td><td>Realistic</td><td>None needed: these come out of every training run.</td></tr>
 </table>
 </div>
 <p>If we fall behind overall, we will keep the flip as our top priority, since it is the core of the project, and narrow vector following to straight-line driving.</p>
